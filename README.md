@@ -50,8 +50,10 @@
 
 如果您想從原始碼執行或修改本專案，請參考以下步驟：
 
-### 1. 取得專案並建立虛擬環境
+
 ```bash
 git clone https://github.com/stingrayShih/PPT-video-converter.git
 cd PPT-video-converter
-python -m venv venv
+pip install -r requirements.txt
+python main.py
+```
