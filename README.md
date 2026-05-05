@@ -52,6 +52,6 @@
 
 ### 1. 取得專案並建立虛擬環境
 ```bash
-git clone [https://github.com/你的帳號/PPT-video-converter.git](https://github.com/你的帳號/PPT-video-converter.git)
+git clone https://github.com/stingrayShih/PPT-video-converter.git
 cd PPT-video-converter
 python -m venv venv
