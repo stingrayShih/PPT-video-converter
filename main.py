@@ -1,3 +1,4 @@
+import os
 import tkinter as tk
 from tkinter import filedialog, messagebox, ttk
 import threading
@@ -24,7 +25,8 @@ class AppGUI:
     def __init__(self, root):
         self.root = root
         self.root.title("PPT 轉影片自動化工具")
-        self.root.geometry("550x450") # 把視窗稍微拉高一點容納進度條
+        # 把視窗高度調大為 500
+        self.root.geometry("550x500")
 
         self.ppt_path = tk.StringVar()
         self.bgm_path = tk.StringVar()
@@ -53,10 +55,20 @@ class AppGUI:
         tk.Scale(self.root, from_=0.5, to=10.0, resolution=0.5, orient=tk.HORIZONTAL, variable=self.silent_sec).pack()
 
         # LibreOffice 路徑
-        tk.Label(self.root, text="LibreOffice 執行檔路徑 (如有設定環境變數可保留 soffice):").pack(pady=(10, 0))
-        tk.Entry(self.root, textvariable=self.libreoffice_path, width=55).pack(padx=5)
+        tk.Label(self.root, text="LibreOffice 執行檔路徑:").pack(pady=(10, 0))
+        frame_lo = tk.Frame(self.root)
+        frame_lo.pack()
+        tk.Entry(frame_lo, textvariable=self.libreoffice_path, width=50).pack(pady=5)
+        
+        # 新增：兩個預設路徑按鈕
+        frame_lo_btns = tk.Frame(self.root)
+        frame_lo_btns.pack()
+        tk.Button(frame_lo_btns, text="Windows 預設路徑", 
+                  command=lambda: self.libreoffice_path.set(r"C:\Program Files\LibreOffice\program\soffice.exe")).pack(side=tk.LEFT, padx=5)
+        tk.Button(frame_lo_btns, text="macOS 預設路徑", 
+                  command=lambda: self.libreoffice_path.set("/Applications/LibreOffice.app/Contents/MacOS/soffice")).pack(side=tk.LEFT, padx=5)
 
-        # === 新增：進度條 UI ===
+        # === 進度條 UI ===
         self.progress_var = tk.DoubleVar()
         self.progress_bar = ttk.Progressbar(self.root, orient="horizontal", length=400, mode="determinate", variable=self.progress_var)
         self.progress_bar.pack(pady=15)
@@ -80,9 +92,21 @@ class AppGUI:
         self.root.after(0, lambda: self.status_label.config(text=msg))
 
     def start_conversion(self):
-        if not self.ppt_path.get():
+        current_ppt_path = self.ppt_path.get()
+        
+        # 檢查是否有填寫路徑
+        if not current_ppt_path:
             messagebox.showwarning("警告", "請先選擇 PPT 檔案！")
             return
+            
+        # 檢查該路徑的 PPT 檔案是否真的存在
+        if not os.path.exists(current_ppt_path):
+            messagebox.showerror("錯誤", "找不到對應的ppt檔案，請確定ppt檔案路徑是否有誤")
+            return
+
+        # 強制切換工作目錄到 PPT 所在的資料夾
+        ppt_dir = os.path.dirname(current_ppt_path)
+        os.chdir(ppt_dir)
 
         # 鎖定按鈕，進度條歸零
         self.run_btn.config(state=tk.DISABLED)
