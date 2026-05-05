@@ -34,7 +34,7 @@
 
 如果您只是想使用這個軟體，不需要懂程式碼，請依循以下步驟：
 
-1. 前往本專案的 [**Releases 頁面**](https://github.com/你的帳號/PPT-video-converter/releases)。 *(👉 記得把這段網址換成你的真實網址)*
+1. 前往本專案的 [**Releases 頁面**](https://github.com/stingrayShih/PPT-video-converter/releases)。
 2. 下載最新的安裝檔（如 `PPT_to_Video_Converter_v1.0.zip`）。
 3. 解壓縮後，雙擊執行 `setup.exe` 進行安裝。
 4. 安裝完成後，從桌面開啟「PPT轉影片自動化工具」。
